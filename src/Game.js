@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Loop, Stage, World, Body, Sprite } from 'react-game-kit';
 
 import GameStart from './GameStart';
+import Gameplay from './Gameplay'
 
 
 class Game extends Component {
@@ -47,6 +48,7 @@ class Game extends Component {
               />
               <Sprite />
             </Body>
+            <Gameplay />
           </World>
         </Stage>
       </Loop>
