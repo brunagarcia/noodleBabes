@@ -9,6 +9,7 @@ import GameOver from './GameOver'
 
 
 
+
 class Gameplay extends Component {
   constructor() {
     super()
@@ -16,6 +17,15 @@ class Gameplay extends Component {
       gameOver: false
     }
   }
+
+  detectGameover = () => {
+    if (this.props.lifeCounter === 0) {
+      this.setState({
+        gameOver: true
+      })
+    }
+  }
+
   render() {
     return (
      
@@ -37,6 +47,7 @@ class Gameplay extends Component {
             lives={this.props.lives} 
             lifeCounter={this.props.lifeCounter}
             startGame={this.props.startGame}
+            restartGame={this.props.restartGame}
             />
           : 
           <GameSession 

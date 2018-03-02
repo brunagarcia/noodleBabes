@@ -35,6 +35,14 @@ class Game extends Component {
     })
   }
 
+  // function to retoggle gamestate to false in order to bring back to landing page render
+  restartGame = () => {
+    console.log('GAME RESTARTING')
+    this.setState({
+      gameState: false
+    })
+  }
+
 
   // function to decrease lives 
 
@@ -66,6 +74,8 @@ class Game extends Component {
                   gameState={this.state.gameState}
                   startGame={this.startGame} 
                   lives={this.state.lives}
+                  lifeCounter={this.lifeCounter}
+                  restartGame={this.restartGame}
                   />
               ) : (
                 <Gameplay
@@ -75,6 +85,7 @@ class Game extends Component {
                   lives={this.state.lives}
                   lifeCounter={this.lifeCounter}
                   startGame={this.startGame}
+                  restartGame={this.restartGame}
                   />
                 )}
               <Sprite />
