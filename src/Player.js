@@ -14,26 +14,26 @@ class Player extends Component {
     super()
   }
 
-  // move = (body, x) => {
-  //   Matter.Body.setVelocity(body, { x, y: 0 });
-  // };
+  move = (body, x) => {
+    Matter.Body.setVelocity(body, { x, y: 0 });
+  };
 
-  // update = () => {
-  //   const { body } = this.body;
-  //   // if (keys.isDown(keys.LEFT)) {
-  //   //   this.move(body, -5);
-  //   // } else if (keys.isDown(keys.RIGHT)) {
-  //   //   this.move(body, 5);
-  //   // }
-  // };
+  update = () => {
+    const { body } = this.body;
+    // if (keys.isDown(keys.LEFT)) {
+    //   this.move(body, -5);
+    // } else if (keys.isDown(keys.RIGHT)) {
+    //   this.move(body, 5);
+    // }
+  };
   
-  // componentDidMount() {
-  //   Matter.Events.on(this.context.engine, 'afterUpdate', this.update);
-  // }
+  componentDidMount() {
+    Matter.Events.on(this.context.engine, 'afterUpdate', this.update);
+  }
 
-  // componentWillUnmount() {
-  //   Matter.Events.off(this.context.engine, 'afterUpdate', this.update);
-  // }
+  componentWillUnmount() {
+    Matter.Events.off(this.context.engine, 'afterUpdate', this.update);
+  }
 
 
   render() {
