@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ArrowKeysReact from 'arrow-keys-react';
 
 let enemies = Array.from({length: 10}, () => Math.floor(Math.random() * 700));
+
 const player = new Image()
 player.src = 'anime-girl.svg'
 const enemyImages = [
@@ -16,6 +17,7 @@ let enemiesJSX = enemies.map((x) => {
   let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
   let img = new Image()
   img.src = enemyImages[Math.floor(Math.random()*5)]
+
   return {
     x: x,
     y: 0,
@@ -122,7 +124,6 @@ class GameSession extends Component {
     cancelAnimationFrame(() => {this.draw()});
     // cancelAnimationFrame(this.state.request);
   }
-
   componentDidUpdate() {
     this.draw()
 
@@ -242,4 +243,4 @@ class GameSession extends Component {
   }
 }
 
-export default GameSession
+export default GameSession;

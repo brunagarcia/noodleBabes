@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import Player from './Player'
-// import keydown, { Keys } from 'react-keydown';
-// var ReactCanvas = require('react-canvas');
+import Player from './Player';
+
 // import components
 import GameSession from './GameSession';
 import GameOver from './GameOver'
-
-
 
 class Gameplay extends Component {
   // lifeCounter = () => {
@@ -53,5 +50,5 @@ class Gameplay extends Component {
   }
 }
 
-export default Gameplay
+export default Gameplay;
 

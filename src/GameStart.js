@@ -9,6 +9,16 @@ constructor(){
   }
 }
 
+  handleClick = () => {
+    //call start game func
+    this.props.startGame();
+
+    //call timer func
+    this.props.scoringTimer();
+  }
+
+
+
   handleInput = (e) => {
     this.setState({
       userInput: e.target.value
@@ -27,7 +37,8 @@ constructor(){
           </label>  
         </form>
 
-        <button className='start-button' onClick={() => {this.props.startGame()}}> HIT ENTER TO PLAY </button>
+        <button className='start-button' onClick={() => { this.handleClick() }}> HIT ENTER TO PLAY </button>
+
         <div>
           <img className='logo' src='./ramenbowlblack.png' alt='ramenbowllogo'/>
         </div>
