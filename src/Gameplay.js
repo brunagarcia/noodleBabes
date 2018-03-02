@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import { TileMap, Body } from 'react-game-kit';
 import Player from './Player'
-import keydown, { Keys } from 'react-keydown';
-// var ReactCanvas = require('react-canvas');
 
-// import components
-import GameSession from './GameSession';
-import GameOver from './GameOver'
-
-
-console.log(Keys)
 
 // import components
 import GameSession from './GameSession';

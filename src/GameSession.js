@@ -1,36 +1,22 @@
 import React, { Component } from 'react';
 import ArrowKeysReact from 'arrow-keys-react';
 
-// var circle = {
-//   'x': 300,
-//   'y': 300,
-//   'width': 50,
-//   'height': 50,
-//   'fill': 'white'
-// }
-
-// var animate = function(prop, val, duration) {
-//   // The calculations required for the step function
-//   var start = new Date().getTime();
-//   var end = start + duration;
-//   var current = circle[prop];
-//   var distance = val - current;
-    
-//   var step = function() {
-//     // Get our current progres
-//     var timestamp = new Date().getTime();
-//     var progress = Math.min((duration - (end - timestamp)) / duration, 1);
-      
-//     // Update the square's property
-//     circle[prop] = current + (distance * progress);
-    
-//     // If the animation hasn't finished, repeat the step.
-//     if (progress < 1) requestAnimationFrame(step);
-//   };
-  
-//   // Start the animation
-//   return step();
-// };
+let enemies = Array.from({length: 10}, () => Math.floor(Math.random() * 700));
+let enemiesJSX = enemies.map((x) => {
+  let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
+  return {
+    x: x,
+    y: 0,
+    radius: 10,
+    angle: 0,
+    angles: Math.PI*2,
+    dx: (Math.random() * 1)*negative,
+    dy: 0.3,
+  }
+})
+console.log(enemiesJSX)
+var dx = 1;
+var dy = 1;
 
 
 class GameSession extends Component {
@@ -40,8 +26,8 @@ class GameSession extends Component {
       position: {
         // x: window.innerWidth/2,
         // y: window.innerHeight/2,
-        x: 100,
-        y: 100,
+        x: 200,
+        y: 200,
       },
       key: this.props.keys,
       enemy: [{
@@ -94,88 +80,60 @@ class GameSession extends Component {
     })
   }
   componentDidMount() {
-
     let canvasCtx = this.canvas.getContext('2d');
     this.setState({ canvasCtx: canvasCtx})
     this.draw()
-  //   this.setState({
-  //     request: requestAnimationFrame(this.tick)
-  //  });
+    this.drawBalls
   }
+
   componentWillUnmount() {
     cancelAnimationFrame(this.state.request);
   }
 
-  tick = () => {
-    let { x, y } = this.state.enemy
-    if (y < 400) {
-      this.setState({
-        request: requestAnimationFrame(this.tick),
-        enemy: {
-          x: x,
-          // y: y+5
-          y: y
-        }
-     });
-    //  this.draw()
-    } else {
-      console.log('cancelled')
-      cancelAnimationFrame(this.state.request)
-    }
-  }
-
   componentDidUpdate() {
     this.draw()
-    // this.drawBackground()
-    // console.log(this.state.key)
+
   }
 
-  animate = (prop, val, duration) => {
-    // The calculations required for the step function
-    var start = new Date().getTime();
-    var end = start + duration;
-    var current = circle[prop];
-    var distance = val - current;
-      
-    var step = function() {
-      // Get our current progres
-      var timestamp = new Date().getTime();
-      var progress = Math.min((duration - (end - timestamp)) / duration, 1);
-        
-      // Update the square's property
-      
-      circle[prop] = current + (distance * progress);
-      
-      // If the animation hasn't finished, repeat the step.
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    
-    // Start the animation
-    return step();
-  }
-
-  // createEnemies = () => {
-
+  // keyDown = (e) => {
+  //   console.log("hi")
+  //   if (e.keyCode === 37) {
+  //     this.setState({
+  //       keyLeft: true,
+  //     })
+  //   } else if (e.keyCode === 39) {
+  //     this.setState({
+  //       keyRight: true,
+  //     })
+  //   } else if (e.keyCode === 38) {
+  //     this.setState({
+  //       keyUp: true,
+  //     })
+  //   } else if (e.keyCode === 40) {
+  //     this.setState({
+  //       keyDown: true,
+  //     })
+  //   }  
   // }
 
-  animateEnemies() {
-    const enemy = this.state.enemy
-    let ctx = this.canvas.getContext('2d');
-    //redraw background
-    var circle = {
-      'x': 300,
-      'y': 300,
-      'radius': 20,
-      'sAngle': 0,
-      'eAngle': 0,
-      'fill': 'white'
-    }
-    ctx.arc(circle.x, circle.y, circle.radius, circle.sAngle, circle.eAngle);
-    ctx.fillStyle = circle.fill;
-    ctx.fill();
-    this.animate('y', -100, 3000);
+  // keyUp = (e) => {
+  //   this.setState({
+  //     keyLeft: false,
+  //     keyRight: false,
+  //     keyUp: false,
+  //     keyDown: false,
+  //   })
+  // }
 
-    // requestAnimationFrame(this.drawEnemy);
+  drawBall = () => {
+    let ctx = this.canvas.getContext('2d');
+    enemiesJSX.forEach(enemy => {
+      ctx.beginPath();
+      ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI*2);
+      ctx.fillStyle = "yellow";
+      ctx.fill();
+      ctx.closePath();
+    })
   }
 
   draw = () => {
@@ -195,8 +153,26 @@ class GameSession extends Component {
     canvasCtx.fillRect(x, y, 20, 20);
     canvasCtx.fill();
 
-    
-    this.animateEnemies()
+
+    this.drawBall()
+    enemiesJSX.forEach(enemy => {
+      if((  x >= enemy.x - 10 && x <= enemy.x + 10) && (y >= enemy.y - 10 && y <= enemy.y + 10)) {
+        console.log('you lose!')
+      }
+      if(enemy.x > 700 || enemy.x < 0) {
+        enemy.x = Math.floor(Math.random() * 700)
+        enemy.y = 0
+      } else {
+        
+        enemy.x += enemy.dx;
+      }
+      if(enemy.y > 700 || enemy.y < 0) {
+        enemy.x = Math.floor(Math.random() * 700)
+        enemy.y = 0
+      } else {
+        enemy.y += enemy.dy;
+      }
+    })
 
     // canvasCtx.moveTo(enemy.x,enemy.y+7);
     // //enemy  
@@ -209,7 +185,7 @@ class GameSession extends Component {
 
   render() {
     return (
-      <div {...ArrowKeysReact.events} tabIndex="1">
+      <div onKeyDown={(e) => {this.keyDown}} onKeyUp={(e) => {this.keyUp}} {...ArrowKeysReact.events} tabIndex="1">
         <canvas ref={(self) => {this.canvas = self}}
           style={{backgroundColor: 'black'}}
           width={window.innerWidth}
