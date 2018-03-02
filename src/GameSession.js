@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ArrowKeysReact from 'arrow-keys-react';
 
+// nic comment here
+
 var circle = {
   'x': 100,
   'y': 0,
