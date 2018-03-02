@@ -7,29 +7,31 @@ constructor(){
   this.state = {
     userInput: ''
   }
-
 }
 
   handleInput = (e) => {
     this.setState({
       userInput: e.target.value
     })
-      
   }
 
-
   render() {
+    console.log(this.props.username)
     return (
-      <div style={{color:'white'}}>
-        <form onSubmit={(event) => {this.props.getUserName(event, this.state.userInput)}}>
+      <div className='start-page'>
+        <form 
+          onKeyUp={(event) => { this.props.getUserName(event, this.state.userInput) }} 
+          onSubmit={() => { this.props.startGame() }}>
           <label>
-            Player Name:
-            <input type="text" onChange={this.handleInput} />
-          </label>
-
-          <button style={{color:'red'}} onClick={() => {this.props.startGame()}}> PRESS TO PLAY </button>
-                {(this.props.gameState ? 'hello': 'nope')}
+            PLAYER NAME:
+            <input type="text" onChange={this.handleInput} autoFocus/>
+          </label>  
         </form>
+
+        <button className='start-button' onClick={() => { this.props.startGame() }}> HIT ENTER TO PLAY </button>
+        <div>
+          <img className='logo' src='./ramenbowlblack.png' alt='ramenbowllogo'/>
+        </div>
       </div>
 
     )

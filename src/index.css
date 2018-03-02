@@ -1,5 +1,97 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Space Mono', monospace;
+  text-align: center;
+  color: gold;
+  background-color: white
 }
+
+.game-container {
+  margin: 5rem;
+}
+
+form {
+  font-size: 2rem;
+  color: gold;
+  padding-top: 5rem;
+  margin-top: 1rem;
+}
+
+input[type="text"] {
+  background: transparent;
+  border-style: dotted;
+  border-color: gold;
+  border-width: 1px;
+  color: gold;
+  font-size: 2.2rem;
+  padding-top: 0.5rem;
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  margin: 0.5rem;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+.start-button {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.5rem;
+  background: transparent;
+  color: red;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  border-style: none;
+}
+
+.start-button:hover {
+  color: gold;
+}
+
+.logo {
+  height: 6rem;
+  width: 6rem;
+  align: center;
+  
+}
+
+.user-stats {
+  padding-top: 1rem;
+}
+.stats {
+  font-size: 1.25rem;
+}
+
+.user-lives {
+  text-align: left;
+  padding-right: 2rem;
+}
+
+.username-stats {
+  text-align: center;
+}
+
+.score-stats {
+  text-align: right;
+  padding-left: 2rem;
+}
+
+.gameover-text {
+  font-family: 'Karla', sans-serif;
+  font-size: 2.3rem;
+  color: red;
+  font-weight: 600;
+  letter-spacing: 0.5rem;
+  margin-top: 5rem;
+  text-shadow: 2px 2px #FF0000;
+}
+
+.final-stats {
+  margin-top: 10rem;
+  font-size: 2rem;
+  border-style: 1px dotted gold
+}
+
+
