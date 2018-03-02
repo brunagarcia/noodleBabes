@@ -54,6 +54,7 @@ var animate = function(prop, val, duration) {
 };
 
 
+
 class GameSession extends Component {
   constructor(props) {
     super(props)
@@ -210,4 +211,4 @@ class GameSession extends Component {
   }
 }
 
-export default GameSession
+export default GameSession;
