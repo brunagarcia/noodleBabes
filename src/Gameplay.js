@@ -11,6 +11,10 @@ import GameOver from './GameOver'
 
 console.log(Keys)
 
+// import components
+import GameSession from './GameSession';
+import GameOver from './GameOver'
+
 class Gameplay extends Component {
   constructor() {
     super()
@@ -19,6 +23,7 @@ class Gameplay extends Component {
     }
   }
   render() {
+    console.log(this.props.lives)
     return (
      
       <div>
@@ -26,10 +31,9 @@ class Gameplay extends Component {
           <span className='user-lives'> LIVES: {this.props.lives} </span>
           <span className='username-stats'>PLAYER: {this.props.username} </span>
           <span className='score-stats'>SCORE: {this.props.score}</span>
-        
-        </header>
-        <button type="button" onClick={() => {this.props.lifeCounter()}}> decrement lives </button>
 
+        <button type="button" onClick={() => {this.props.lifeCounter()}}> decrement lives </button>
+        </header>
 
         {(this.state.gameOver) ?
           <GameOver

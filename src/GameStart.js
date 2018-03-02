@@ -32,7 +32,6 @@ constructor(){
         <div>
           <img className='logo' src='./ramenbowlblack.png' alt='ramenbowllogo'/>
         </div>
-
       </div>
 
     )
