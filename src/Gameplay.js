@@ -18,14 +18,6 @@ class Gameplay extends Component {
     }
   }
 
-  detectGameover = () => {
-    if (this.props.lifeCounter === 0) {
-      this.setState({
-        gameOver: true
-      })
-    }
-  }
-
   render() {
     return (
      
@@ -36,10 +28,8 @@ class Gameplay extends Component {
           <span className='score-stats'>SCORE: {this.props.score}</span>
         
         </header>
-        <button type='button' onClick={() => {this.props.lifeCounter()}}> decrement lives </button>
 
-
-        {(!this.state.gameOver) ?
+        {(this.state.gameOver) ?
           <GameOver
             username={this.props.username}
             gameState={this.props.gameState}
