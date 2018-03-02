@@ -14,8 +14,12 @@ body {
 form {
   font-size: 2rem;
   color: gold;
-  padding-top: 5rem;
+  padding-top: 6rem;
   margin-top: 1rem;
+}
+
+.player {
+  padding-bottom: 1rem;
 }
 
 input[type="text"] {
@@ -51,10 +55,21 @@ button:focus {
 }
 
 .logo {
-  height: 6rem;
-  width: 6rem;
+  height: 7rem;
+  width: 7rem;
   align: center;
-  
+  animation-name: spin;
+  animation-duration: 5000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear; 
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
 }
 
 .user-stats {
@@ -88,10 +103,24 @@ button:focus {
   text-shadow: 2px 2px #FF0000;
 }
 
+.gameover-image {
+  height: 17rem;
+}
+
 .final-stats {
-  margin-top: 10rem;
+  margin-top: 5rem;
   font-size: 2rem;
   border-style: 1px dotted gold
+}
+
+.restart-button {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.5rem;
+  background: transparent;
+  color: red;
+  padding: 0;
+  margin-bottom: 2rem;
+  border-style: none;
 }
 
 

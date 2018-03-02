@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import ArrowKeysReact from 'arrow-keys-react';
 
-// var circle = {
-//   'x': 100,
-//   'y': 0,
-//   'radius': 20,
-//   'sAngle': 0,
-//   'eAngle': 0,
-//   'fill': 'white'
-// }
+// nic comment here
+
+var circle = {
+  'x': 100,
+  'y': 0,
+  'radius': 20,
+  'sAngle': 0,
+  'eAngle': 0,
+  'fill': 'white'
+}
 let enemies = Array.from({length: 10}, () => Math.floor(Math.random() * 700));
 console.log(enemies)
 // let rand = new Random();
@@ -30,28 +32,29 @@ var dx = 1;
 var dy = 1;
 
 
-// var animate = function(prop, val, duration) {
-//   // The calculations required for the step function
-//   var start = new Date().getTime();
-//   var end = start + duration;
-//   var current = circle[prop];
-//   var distance = val - current;
+var animate = function(prop, val, duration) {
+  // The calculations required for the step function
+  var start = new Date().getTime();
+  var end = start + duration;
+  var current = circle[prop];
+  var distance = val - current;
     
-//   var step = function() {
-//     // Get our current progres
-//     var timestamp = new Date().getTime();
-//     var progress = Math.min((duration - (end - timestamp)) / duration, 1);
+  var step = function() {
+    // Get our current progres
+    var timestamp = new Date().getTime();
+    var progress = Math.min((duration - (end - timestamp)) / duration, 1);
       
-//     // Update the square's property
-//     circle[prop] = current + (distance * progress);
+    // Update the square's property
+    circle[prop] = current + (distance * progress);
     
-//     // If the animation hasn't finished, repeat the step.
-//     if (progress < 1) requestAnimationFrame(step);
-//   };
+    // If the animation hasn't finished, repeat the step.
+    if (progress < 1) requestAnimationFrame(step);
+  };
   
-//   // Start the animation
-//   return step();
-// };
+  // Start the animation
+  return step();
+};
+
 
 
 class GameSession extends Component {
@@ -130,14 +133,14 @@ class GameSession extends Component {
 
   }
 
-  // animateEnemies() {
-  //   const enemy = this.state.enemy
-  //   let ctx = this.canvas.getContext('2d');
-  //   ctx.rect(circle.x, circle.y, 10, 10)
-  //   ctx.fillStyle = circle.fill;
-  //   // ctx.fill();
-  //   animate('y', 500, 5000);
-  // }
+  animateEnemies() {
+    const enemy = this.state.enemy
+    let ctx = this.canvas.getContext('2d');
+    ctx.rect(circle.x, circle.y, 10, 10)
+    ctx.fillStyle = circle.fill;
+    // ctx.fill();
+    animate('y', 500, 5000);
+  }
 
   drawBall = () => {
     let ctx = this.canvas.getContext('2d');
