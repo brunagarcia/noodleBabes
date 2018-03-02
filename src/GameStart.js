@@ -26,22 +26,23 @@ constructor(){
   }
 
   render() {
-    console.log(this.props.username)
     return (
       <div className='start-page'>
         <form 
           onKeyUp={(event) => { this.props.getUserName(event, this.state.userInput) }} 
           onSubmit={() => { this.props.startGame() }}>
           <label>
-            PLAYER NAME:
+            <p className='player'> |- PLAYER NAME -|</p>
             <input type="text" onChange={this.handleInput} autoFocus/>
           </label>  
         </form>
 
         <button className='start-button' onClick={() => { this.handleClick() }}> HIT ENTER TO PLAY </button>
+
         <div>
           <img className='logo' src='./ramenbowlblack.png' alt='ramenbowllogo'/>
         </div>
+
       </div>
 
     )

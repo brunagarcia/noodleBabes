@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import { TileMap, Body } from 'react-game-kit';
-import Player from './Player'
-
+import Player from './Player';
 
 // import components
 import GameSession from './GameSession';
 import GameOver from './GameOver'
 
 class Gameplay extends Component {
-  constructor() {
-    super()
-    this.state = {
-      gameOver: false
-    }
-  }
+  // lifeCounter = () => {
+  //   this.setState({
+  //     lives: this.lives -1
+  //   })
+  //   console.log(this.state.lives - 1)
+  //   this.checkGameOver()
+  // }
+
   render() {
-    console.log(this.props.lives)
     return (
-     
       <div>
         <header className='user-stats'>
           <span className='user-lives'> LIVES: {this.props.lives} </span>
@@ -27,24 +25,24 @@ class Gameplay extends Component {
         <button type="button" onClick={() => {this.props.lifeCounter()}}> decrement lives </button>
         </header>
 
-        {(this.state.gameOver) ?
-          <GameOver
+        {(this.props.gameOver) ? 
+          (<GameOver
             username={this.props.username}
             gameState={this.props.gameState}
             score={this.props.score}
             lives={this.props.lives} 
             lifeCounter={this.props.lifeCounter}
             startGame={this.props.startGame}
-            />
+            />)
           : 
-          <GameSession 
-            gameOver={this.state.gameOver} 
+          (<GameSession 
+            gameOver={this.props.gameOver} 
             username={this.props.username}
             gameState={this.props.gameState}
             score={this.props.score}
             lives={this.props.lives}
             lifeCounter={this.props.lifeCounter} 
-            />
+            />)
         }
 
     </div>
@@ -52,5 +50,5 @@ class Gameplay extends Component {
   }
 }
 
-export default Gameplay
+export default Gameplay;
 
