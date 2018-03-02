@@ -19,10 +19,9 @@ class GameOver extends Component {
         <div>
           <img className='gameover-image' src='./kagami-noodles-black.png' alt='noodles on head'/>
         </div>
-        
       </div>
     )
   }
 }
 
-export default GameOver
+export default GameOver;
