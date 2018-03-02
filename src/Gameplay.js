@@ -21,7 +21,7 @@ class Gameplay extends Component {
   render() {
     return (
      
-      <div>
+      <div className='playble'>
         <header className='user-stats'>
           <span className='user-lives'> LIVES: {this.props.lives} </span>
           <span className='username-stats'>PLAYER: {this.props.username} </span>
