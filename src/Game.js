@@ -12,7 +12,7 @@ class Game extends Component {
 
     this.state = {
       gameState: false,
-      username: "",
+      username: '',
       score: 0,
       lives: 3
     }
@@ -35,6 +35,7 @@ class Game extends Component {
     })
   }
 
+
   // function to decrease lives 
 
   lifeCounter = () => {
@@ -45,15 +46,19 @@ class Game extends Component {
   }
 
   render() {
-    console.log("username in game.js")
+    console.log('username in game.js')
     console.log(this.state.username)
     return (
 
       <Loop>
-        <Stage style={{ backgroundColor: 'black' }}
+        <Stage style={{backgroundColor: 'black'}}
           height={1000} width={700} >
           <World>
             <Body args={[0, 0, 75, 75]} >
+              
+              {/* Ternary to render our starting page if current state of game state is false and to take 
+              player to the game when they press enter to goggle the game state to true */}
+
               {!this.state.gameState ? (
                 <GameStart
                   username={this.state.username}
@@ -69,6 +74,7 @@ class Game extends Component {
                   score={this.state.score}
                   lives={this.state.lives}
                   lifeCounter={this.lifeCounter}
+                  startGame={this.startGame}
                   />
                 )}
               <Sprite />
