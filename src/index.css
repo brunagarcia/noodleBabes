@@ -20,7 +20,9 @@ form {
 
 input[type="text"] {
   background: transparent;
-  border: none;
+  border-style: dotted;
+  border-color: gold;
+  border-width: 1px;
   color: gold;
   font-size: 2.2rem;
   padding-top: 0.5rem;
@@ -28,7 +30,12 @@ input[type="text"] {
   font-family: 'Space Mono', monospace;
   margin: 0.5rem;
 }
-
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
 .start-button {
   font-family: 'Space Mono', monospace;
   font-size: 1.5rem;
@@ -42,6 +49,14 @@ input[type="text"] {
 .start-button:hover {
   color: gold;
 }
+
+.logo {
+  height: 6rem;
+  width: 6rem;
+  align: center;
+  
+}
+
 .user-stats {
   padding-top: 1rem;
 }

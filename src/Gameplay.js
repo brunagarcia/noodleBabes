@@ -19,7 +19,6 @@ class Gameplay extends Component {
     }
   }
   render() {
-    console.log(this.props.lives)
     return (
      
       <div>
@@ -28,9 +27,9 @@ class Gameplay extends Component {
           <span className='username-stats'>PLAYER: {this.props.username} </span>
           <span className='score-stats'>SCORE: {this.props.score}</span>
         
-
-        <button type="button" onClick={() => {this.props.lifeCounter()}}> decrement lives </button>
         </header>
+        <button type="button" onClick={() => {this.props.lifeCounter()}}> decrement lives </button>
+
 
         {(this.state.gameOver) ?
           <GameOver
