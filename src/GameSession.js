@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import ArrowKeysReact from 'arrow-keys-react';
 
-// nic comment here
-
-var circle = {
-  'x': 100,
-  'y': 0,
-  'radius': 20,
-  'sAngle': 0,
-  'eAngle': 0,
-  'fill': 'white'
-}
 let enemies = Array.from({length: 10}, () => Math.floor(Math.random() * 700));
-console.log(enemies)
-// let rand = new Random();
-// let enemies = Array.from({length: 10}, () => rand.nextInt(100) );
+const player = new Image()
+player.src = 'anime-girl.svg'
+const enemyImages = [
+  'boiled-egg.svg',
+  'naruto.svg',
+  'naruto2.svg',
+  'ramenbowl4.png',
+  'ramenbowl5.svg',
+]
+let decreaseSpeed = 1
 let enemiesJSX = enemies.map((x) => {
   let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
+  let img = new Image()
+  img.src = enemyImages[Math.floor(Math.random()*5)]
   return {
     x: x,
     y: 0,
@@ -24,38 +23,18 @@ let enemiesJSX = enemies.map((x) => {
     angle: 0,
     angles: Math.PI*2,
     dx: (Math.random() * 1)*negative,
-    dy: 0.3,
+    dy: 0.2,
+    image:  img
   }
 })
 console.log(enemiesJSX)
 var dx = 1;
 var dy = 1;
 
+let imageObj = new Image();
+imageObj.src="ramenbowl4.png"
 
-var animate = function(prop, val, duration) {
-  // The calculations required for the step function
-  var start = new Date().getTime();
-  var end = start + duration;
-  var current = circle[prop];
-  var distance = val - current;
-    
-  var step = function() {
-    // Get our current progres
-    var timestamp = new Date().getTime();
-    var progress = Math.min((duration - (end - timestamp)) / duration, 1);
-      
-    // Update the square's property
-    circle[prop] = current + (distance * progress);
-    
-    // If the animation hasn't finished, repeat the step.
-    if (progress < 1) requestAnimationFrame(step);
-  };
-  
-  // Start the animation
-  return step();
-};
-
-
+let keyPressed = false
 
 class GameSession extends Component {
   constructor(props) {
@@ -74,58 +53,74 @@ class GameSession extends Component {
         'width': 50,
         'height': 50,
         'fill': 'white'
-      }],
-      request: ''
+      }]
     }
     ArrowKeysReact.config({
       left: () => {
+        keyPressed = true
         this.setState({
           key: 'left',
-          keypressed: true,
           position: {
-            x: this.state.position.x-10,
+            x: this.state.position.x-5,
             y: this.state.position.y,
           }
         });
       },
       right: () => {
+        keyPressed = true
+
         this.setState({
           key: 'right',
           position: {
-            x: this.state.position.x+10,
+            x: this.state.position.x+5,
             y: this.state.position.y,
           }
 
         });
       },
       up: () => {
+        keyPressed = true
+
         this.setState({
           key: 'up',
           position: {
             x: this.state.position.x,
-            y: this.state.position.y-10,
+            y: this.state.position.y-5,
           }
         });
       },
       down: () => {
+        keyPressed = true
+
         this.setState({
           key: 'down',
           position: {
             x: this.state.position.x,
-            y: this.state.position.y+10,
+            y: this.state.position.y+5,
           }
         })
-      }
+      },
+      notpressed: () => {
+        this.setState({
+          key: '',
+        })
+      },
     })
   }
   componentDidMount() {
     let canvasCtx = this.canvas.getContext('2d');
     this.setState({ canvasCtx: canvasCtx})
     this.draw()
+    
+    document.body.addEventListener('keyup', function(e) {
+      keyPressed = false
+      // console.log(keyPressed)
+    })
   }
 
   componentWillUnmount() {
-    cancelAnimationFrame(this.state.request);
+    cancelAnimationFrame(() => {this.draw()});
+    // cancelAnimationFrame(this.state.request);
   }
 
   componentDidUpdate() {
@@ -133,31 +128,48 @@ class GameSession extends Component {
 
   }
 
-  animateEnemies() {
-    const enemy = this.state.enemy
-    let ctx = this.canvas.getContext('2d');
-    ctx.rect(circle.x, circle.y, 10, 10)
-    ctx.fillStyle = circle.fill;
-    // ctx.fill();
-    animate('y', 500, 5000);
-  }
+  // keyDown = (e) => {
+  //   console.log("hi")
+  //   if (e.keyCode === 37) {
+  //     this.setState({
+  //       keyLeft: true,
+  //     })
+  //   } else if (e.keyCode === 39) {
+  //     this.setState({
+  //       keyRight: true,
+  //     })
+  //   } else if (e.keyCode === 38) {
+  //     this.setState({
+  //       keyUp: true,
+  //     })
+  //   } else if (e.keyCode === 40) {
+  //     this.setState({
+  //       keyDown: true,
+  //     })
+  //   }  
+  // }
+
+  // keyUp = (e) => {
+  //   this.setState({
+  //     keyLeft: false,
+  //     keyRight: false,
+  //     keyUp: false,
+  //     keyDown: false,
+  //   })
+  // }
 
   drawBall = () => {
     let ctx = this.canvas.getContext('2d');
     enemiesJSX.forEach(enemy => {
-      ctx.beginPath();
-      ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI*2);
-      ctx.fillStyle = "yellow";
-      ctx.fill();
-      ctx.closePath();
+      ctx.drawImage(enemy.image,enemy.x,enemy.y,40,40)
     })
   }
 
   draw = () => {
+    // console.log(this.props.gameOver)
     const { x, y } = this.state.position
     const enemy = this.state.enemy
     let canvasCtx = this.canvas.getContext('2d');
-    // let drawVisual = requestAnimationFrame(this.draw);
 
     //redraw background
     canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height)
@@ -166,43 +178,60 @@ class GameSession extends Component {
     canvasCtx.fill();
 
     //draw player
-    canvasCtx.fillStyle = 'rgb(255, 255, 255)';
-    canvasCtx.fillRect(x, y, 20, 20);
-    canvasCtx.fill();
-
+    canvasCtx.drawImage(player,x,y,40,40)
+    // canvasCtx.fillStyle = 'rgb(255, 255, 255)';
+    // canvasCtx.fillRect(x, y, 20, 20);
+    // canvasCtx.fill();
 
     this.drawBall()
+   
     enemiesJSX.forEach(enemy => {
-      if((  x >= enemy.x - 10 && x <= enemy.x + 10) && (y >= enemy.y - 10 && y <= enemy.y + 10)) {
+      if((  x >= enemy.x - 20 && x <= enemy.x + 20) && (y >= enemy.y - 20 && y <= enemy.y + 20)) {
         console.log('you lose!')
+        this.props.lifeCounter()
+        let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
+        enemy.x = Math.floor(Math.random() * 700)
+        enemy.y = 0
+        enemy.dx = (Math.random() * 1)*negative/2
+        enemy.dy = 0.05
       }
       if(enemy.x > 700 || enemy.x < 0) {
+        let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
         enemy.x = Math.floor(Math.random() * 700)
         enemy.y = 0
+        enemy.dx = (Math.random() * 1)*negative/2
+        enemy.dy = 0.2
       } else {
-        
-        enemy.x += enemy.dx;
+        // if(keyPressed === false) {
+          enemy.x += enemy.dx;
+          decreaseSpeed += 0.1
+        // }
       }
       if(enemy.y > 700 || enemy.y < 0) {
+        let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
         enemy.x = Math.floor(Math.random() * 700)
         enemy.y = 0
+        enemy.dx = (Math.random() * 1)*negative/2
+        enemy.dy = 0.2
       } else {
-        enemy.y += enemy.dy;
+        // if(keyPressed === false) {
+          enemy.y += enemy.dy;
+          decreaseSpeed += 0.0001
+        // }
       }
     })
-
-    // canvasCtx.moveTo(enemy.x,enemy.y+7);
-    // //enemy  
-    // canvasCtx.fillStyle = 'pink';
-    // canvasCtx.arc(enemy.x,enemy.y,20,0,2*Math.PI)
-    
     requestAnimationFrame(() => {this.draw()});
+    // if(!this.props.gameOver) {
+    //   requestAnimationFrame(() => {this.draw()});
+    // } else {
+    //   cancelAnimationFrame(() => {this.draw()});
+    // }
     // window.requestAnimationFrame(this.draw)
   }
 
   render() {
     return (
-      <div {...ArrowKeysReact.events} tabIndex="1">
+      <div {...ArrowKeysReact.events}  tabIndex="1">
         <canvas ref={(self) => {this.canvas = self}}
           style={{backgroundColor: 'black'}}
           width={window.innerWidth}

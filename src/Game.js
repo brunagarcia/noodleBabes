@@ -14,7 +14,8 @@ class Game extends Component {
       gameState: false,
       username: "",
       score: 0,
-      lives: 3
+      lives: 3,
+      gameOver: false
     }
   }
 
@@ -35,6 +36,14 @@ class Game extends Component {
     })
   }
 
+  checkGameOver = () => {
+    if(this.state.lives < 0) {
+      this.setState({
+        gameOver: true
+      })
+    }
+  }
+
   // function to decrease lives 
 
   lifeCounter = () => {
@@ -42,6 +51,7 @@ class Game extends Component {
     this.setState({
       lives: this.state.lives - 1
     })
+    this.checkGameOver()
   }
 
   render() {
@@ -69,6 +79,7 @@ class Game extends Component {
                   score={this.state.score}
                   lives={this.state.lives}
                   lifeCounter={this.lifeCounter}
+                  gameOver={this.state.gameOver}
                   />
                 )}
               <Sprite />
