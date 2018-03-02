@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { TileMap, Body } from 'react-game-kit';
 import Player from './Player'
+import keydown, { Keys } from 'react-keydown';
+// var ReactCanvas = require('react-canvas');
+
+// import components
+import GameSession from './GameSession';
+import GameOver from './GameOver'
+
+
+console.log(Keys)
 
 // import components
 import GameSession from './GameSession';
@@ -22,7 +31,6 @@ class Gameplay extends Component {
           <span className='user-lives'> LIVES: {this.props.lives} </span>
           <span className='username-stats'>PLAYER: {this.props.username} </span>
           <span className='score-stats'>SCORE: {this.props.score}</span>
-        
 
         <button type="button" onClick={() => {this.props.lifeCounter()}}> decrement lives </button>
         </header>
@@ -53,3 +61,4 @@ class Gameplay extends Component {
 }
 
 export default Gameplay
+

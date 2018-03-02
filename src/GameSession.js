@@ -1,6 +1,38 @@
 import React, { Component } from 'react';
 import ArrowKeysReact from 'arrow-keys-react';
 
+// var circle = {
+//   'x': 300,
+//   'y': 300,
+//   'width': 50,
+//   'height': 50,
+//   'fill': 'white'
+// }
+
+// var animate = function(prop, val, duration) {
+//   // The calculations required for the step function
+//   var start = new Date().getTime();
+//   var end = start + duration;
+//   var current = circle[prop];
+//   var distance = val - current;
+    
+//   var step = function() {
+//     // Get our current progres
+//     var timestamp = new Date().getTime();
+//     var progress = Math.min((duration - (end - timestamp)) / duration, 1);
+      
+//     // Update the square's property
+//     circle[prop] = current + (distance * progress);
+    
+//     // If the animation hasn't finished, repeat the step.
+//     if (progress < 1) requestAnimationFrame(step);
+//   };
+  
+//   // Start the animation
+//   return step();
+// };
+
+
 class GameSession extends Component {
   constructor(props) {
     super(props)
@@ -12,10 +44,13 @@ class GameSession extends Component {
         y: 100,
       },
       key: this.props.keys,
-      enemy: {
-        x: 70,
-        y: 0
-      },
+      enemy: [{
+        'x': 200,
+        'y': 0,
+        'width': 50,
+        'height': 50,
+        'fill': 'white'
+      }],
       request: ''
     }
     ArrowKeysReact.config({
@@ -59,10 +94,13 @@ class GameSession extends Component {
     })
   }
   componentDidMount() {
+
+    let canvasCtx = this.canvas.getContext('2d');
+    this.setState({ canvasCtx: canvasCtx})
     this.draw()
-    this.setState({
-      request: requestAnimationFrame(this.tick)
-   });
+  //   this.setState({
+  //     request: requestAnimationFrame(this.tick)
+  //  });
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.state.request);
@@ -75,10 +113,11 @@ class GameSession extends Component {
         request: requestAnimationFrame(this.tick),
         enemy: {
           x: x,
-          y: y+5
+          // y: y+5
+          y: y
         }
      });
-     this.draw()
+    //  this.draw()
     } else {
       console.log('cancelled')
       cancelAnimationFrame(this.state.request)
@@ -91,14 +130,52 @@ class GameSession extends Component {
     // console.log(this.state.key)
   }
 
-  drawEnemy() {
+  animate = (prop, val, duration) => {
+    // The calculations required for the step function
+    var start = new Date().getTime();
+    var end = start + duration;
+    var current = circle[prop];
+    var distance = val - current;
+      
+    var step = function() {
+      // Get our current progres
+      var timestamp = new Date().getTime();
+      var progress = Math.min((duration - (end - timestamp)) / duration, 1);
+        
+      // Update the square's property
+      
+      circle[prop] = current + (distance * progress);
+      
+      // If the animation hasn't finished, repeat the step.
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    
+    // Start the animation
+    return step();
+  }
+
+  // createEnemies = () => {
+
+  // }
+
+  animateEnemies() {
     const enemy = this.state.enemy
     let ctx = this.canvas.getContext('2d');
     //redraw background
+    var circle = {
+      'x': 300,
+      'y': 300,
+      'radius': 20,
+      'sAngle': 0,
+      'eAngle': 0,
+      'fill': 'white'
+    }
+    ctx.arc(circle.x, circle.y, circle.radius, circle.sAngle, circle.eAngle);
+    ctx.fillStyle = circle.fill;
+    ctx.fill();
+    this.animate('y', -100, 3000);
 
-    ctx.fillStyle = 'pink';
-    ctx.arc(enemy.x,enemy.y,20,0,2*Math.PI)
-    ctx.moveTo(enemy.x,enemy.y);
+    // requestAnimationFrame(this.drawEnemy);
   }
 
   draw = () => {
@@ -108,19 +185,25 @@ class GameSession extends Component {
     // let drawVisual = requestAnimationFrame(this.draw);
 
     //redraw background
+    canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     canvasCtx.fillStyle = 'rgb(0, 0, 0)';
     canvasCtx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    canvasCtx.fill();
 
     //draw player
     canvasCtx.fillStyle = 'rgb(255, 255, 255)';
     canvasCtx.fillRect(x, y, 20, 20);
+    canvasCtx.fill();
+
     
-    this.drawEnemy()
+    this.animateEnemies()
+
+    // canvasCtx.moveTo(enemy.x,enemy.y+7);
     // //enemy  
     // canvasCtx.fillStyle = 'pink';
     // canvasCtx.arc(enemy.x,enemy.y,20,0,2*Math.PI)
     
-    // requestAnimationFrame(() => {this.draw()});
+    requestAnimationFrame(() => {this.draw()});
     // window.requestAnimationFrame(this.draw)
   }
 
