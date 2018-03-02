@@ -36,7 +36,6 @@ constructor(){
             <input type="text" onChange={this.handleInput} autoFocus/>
           </label>  
         </form>
-
         <button className='start-button' onClick={() => { this.handleClick() }}> HIT ENTER TO PLAY </button>
 
         <div>

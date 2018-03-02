@@ -12,7 +12,7 @@ class Game extends Component {
 
     this.state = {
       gameState: false,
-      username: "",
+      username: '',
       score: 0,
       lives: 3,
       gameOver: false
@@ -58,6 +58,15 @@ class Game extends Component {
     })
   }
 
+
+  // function to retoggle gamestate to false in order to bring back to landing page render
+  restartGame = () => {
+    console.log('GAME RESTARTING')
+    this.setState({
+      gameState: false
+    })
+  }
+
   checkGameOver = () => {
     if(this.state.lives < 0) {
       this.setState({
@@ -67,7 +76,6 @@ class Game extends Component {
   }
 
   // function to decrease lives 
-
   lifeCounter = () => {
     console.log(this.state.lives)
     this.setState({
@@ -77,15 +85,19 @@ class Game extends Component {
   }
 
   render() {
-    console.log("username in game.js")
+    console.log('username in game.js')
     console.log(this.state.username)
     return (
 
       <Loop>
-        <Stage style={{ backgroundColor: 'black' }}
+        <Stage style={{backgroundColor: 'black'}}
           height={1000} width={700} >
           <World>
             <Body args={[0, 0, 75, 75]} >
+              
+              {/* Ternary to render our starting page if current state of game state is false and to take 
+              player to the game when they press enter to goggle the game state to true */}
+
               {!this.state.gameState ? (
                 <GameStart
                   scoringTimer={this.scoringTimer}
@@ -94,6 +106,8 @@ class Game extends Component {
                   gameState={this.state.gameState}
                   startGame={this.startGame} 
                   lives={this.state.lives}
+                  lifeCounter={this.lifeCounter}
+                  restartGame={this.restartGame}
                   />
               ) : (
                 <Gameplay
@@ -102,7 +116,10 @@ class Game extends Component {
                   score={this.state.score}
                   lives={this.state.lives}
                   lifeCounter={this.lifeCounter}
+                  startGame={this.startGame}
+                  restartGame={this.restartGame}
                   gameOver={this.state.gameOver}
+
                   />
                 )}
               <Sprite />

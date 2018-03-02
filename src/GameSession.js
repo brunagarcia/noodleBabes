@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ArrowKeysReact from 'arrow-keys-react';
-
 let enemies = Array.from({length: 10}, () => Math.floor(Math.random() * 700));
 
 const player = new Image()
@@ -17,7 +16,6 @@ let enemiesJSX = enemies.map((x) => {
   let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
   let img = new Image()
   img.src = enemyImages[Math.floor(Math.random()*5)]
-
   return {
     x: x,
     y: 0,
@@ -57,6 +55,7 @@ class GameSession extends Component {
         'fill': 'white'
       }]
     }
+
     ArrowKeysReact.config({
       left: () => {
         keyPressed = true
@@ -129,45 +128,17 @@ class GameSession extends Component {
 
   }
 
-  // keyDown = (e) => {
-  //   console.log("hi")
-  //   if (e.keyCode === 37) {
-  //     this.setState({
-  //       keyLeft: true,
-  //     })
-  //   } else if (e.keyCode === 39) {
-  //     this.setState({
-  //       keyRight: true,
-  //     })
-  //   } else if (e.keyCode === 38) {
-  //     this.setState({
-  //       keyUp: true,
-  //     })
-  //   } else if (e.keyCode === 40) {
-  //     this.setState({
-  //       keyDown: true,
-  //     })
-  //   }  
-  // }
-
-  // keyUp = (e) => {
-  //   this.setState({
-  //     keyLeft: false,
-  //     keyRight: false,
-  //     keyUp: false,
-  //     keyDown: false,
-  //   })
-  // }
-
   drawBall = () => {
     let ctx = this.canvas.getContext('2d');
     enemiesJSX.forEach(enemy => {
       ctx.drawImage(enemy.image,enemy.x,enemy.y,40,40)
+
     })
   }
 
   draw = () => {
     // console.log(this.props.gameOver)
+
     const { x, y } = this.state.position
     const enemy = this.state.enemy
     let canvasCtx = this.canvas.getContext('2d');

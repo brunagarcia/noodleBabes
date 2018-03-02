@@ -15,12 +15,10 @@ class GameOver extends Component {
         </div>
         
         <p className='gameover-text'>GAMEOVER</p>
-        <button className='restart-button' onClick={() => {this.props.startGame()}}> CLICK HERE TO PLAY AGAIN </button>
+        <button className='restart-button' onClick={() => {this.props.restartGame()}}> CLICK HERE TO PLAY AGAIN </button>
         <div>
-          <img className='gameover-image' src='./kagami-noodles1.png' alt='noodles on head'/>
+          <img className='gameover-image' src='./kagami-noodles-black.png' alt='noodles on head'/>
         </div>
-
-        
       </div>
     )
   }
