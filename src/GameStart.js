@@ -9,6 +9,20 @@ constructor(){
   }
 }
 
+  // componentDidMount() {
+  //   this.audio.play()
+  // }
+
+  handleClick = () => {
+    //call start game func
+    this.props.startGame();
+    //call timer func
+    this.props.scoringTimer();
+
+  }
+
+
+
   handleInput = (e) => {
     this.setState({
       userInput: e.target.value
@@ -18,6 +32,7 @@ constructor(){
   render() {
     return (
       <div className='start-page'>
+      <h1 className='game-title'> STOP SENDING NOODS </h1>
         <form 
           onKeyUp={(event) => { this.props.getUserName(event, this.state.userInput) }} 
           onSubmit={() => { this.props.startGame() }}>
@@ -26,12 +41,14 @@ constructor(){
             <input type="text" onChange={this.handleInput} autoFocus/>
           </label>  
         </form>
+        <button className='start-button' onClick={() => { this.handleClick() }}> HIT ENTER TO PLAY </button>
 
-        <button className='start-button' onClick={() => {this.props.startGame()}}> HIT ENTER TO PLAY </button>
         <div>
           <img className='logo' src='./ramenbowlblack.png' alt='ramenbowllogo'/>
         </div>
-
+      {/* <audio ref={audio => this.audio = audio}>
+        <source src="playgame.mp3" />
+      </audio> */}
       </div>
 
     )

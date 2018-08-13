@@ -1,30 +1,35 @@
 import React, { Component } from 'react';
-import ArrowKeysReact from 'arrow-keys-react';
 
-// nic comment here
+const maxEnemies = 20
+const startingSpeedMax = 2
+const increasingSpeedMax = 1.5
 
-var circle = {
-  'x': 100,
-  'y': 0,
-  'radius': 20,
-  'sAngle': 0,
-  'eAngle': 0,
-  'fill': 'white'
-}
-let enemies = Array.from({length: 10}, () => Math.floor(Math.random() * 700));
-console.log(enemies)
-// let rand = new Random();
-// let enemies = Array.from({length: 10}, () => rand.nextInt(100) );
+let keysPressed = []
+let enemies = Array.from({length: maxEnemies}, () => Math.floor(Math.random() * 700));
+const player = new Image()
+player.src = 'anime-girl.svg'
+const enemyImages = [
+  'boiled-egg.svg',
+  'naruto.svg',
+  'naruto2.svg',
+  'ramenbowl4.png',
+  'ramenbowl5.svg',
+]
+let decreaseSpeed = 1
 let enemiesJSX = enemies.map((x) => {
   let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
+  let img = new Image()
+  img.src = enemyImages[Math.floor(Math.random()*4)]
+  console.log(img.src)
   return {
     x: x,
     y: 0,
     radius: 10,
     angle: 0,
     angles: Math.PI*2,
-    dx: (Math.random() * 1)*negative,
-    dy: 0.3,
+    dx: Math.floor((Math.random() * startingSpeedMax))*negative + 1*negative,
+    dy: Math.floor((Math.random() * startingSpeedMax)) + 1,
+    image:  img
   }
 })
 console.log(enemiesJSX)
@@ -32,40 +37,13 @@ var dx = 1;
 var dy = 1;
 
 
-var animate = function(prop, val, duration) {
-  // The calculations required for the step function
-  var start = new Date().getTime();
-  var end = start + duration;
-  var current = circle[prop];
-  var distance = val - current;
-    
-  var step = function() {
-    // Get our current progres
-    var timestamp = new Date().getTime();
-    var progress = Math.min((duration - (end - timestamp)) / duration, 1);
-      
-    // Update the square's property
-    circle[prop] = current + (distance * progress);
-    
-    // If the animation hasn't finished, repeat the step.
-    if (progress < 1) requestAnimationFrame(step);
-  };
-  
-  // Start the animation
-  return step();
-};
-
-
-
 class GameSession extends Component {
   constructor(props) {
     super(props)
     this.state = {
       position: {
-        // x: window.innerWidth/2,
-        // y: window.innerHeight/2,
-        x: 200,
-        y: 200,
+        x: 220,
+        y: 330,
       },
       key: this.props.keys,
       enemy: [{
@@ -75,139 +53,143 @@ class GameSession extends Component {
         'height': 50,
         'fill': 'white'
       }],
-      request: ''
+      arrowDown: false,
+      arrowUp: false,
+      arrowLeft: false,
+      arrowRight: false,
     }
-    ArrowKeysReact.config({
-      left: () => {
-        this.setState({
-          key: 'left',
-          keypressed: true,
-          position: {
-            x: this.state.position.x-10,
-            y: this.state.position.y,
-          }
-        });
-      },
-      right: () => {
-        this.setState({
-          key: 'right',
-          position: {
-            x: this.state.position.x+10,
-            y: this.state.position.y,
-          }
 
-        });
-      },
-      up: () => {
-        this.setState({
-          key: 'up',
-          position: {
-            x: this.state.position.x,
-            y: this.state.position.y-10,
-          }
-        });
-      },
-      down: () => {
-        this.setState({
-          key: 'down',
-          position: {
-            x: this.state.position.x,
-            y: this.state.position.y+10,
-          }
-        })
-      }
-    })
   }
   componentDidMount() {
+    // this.container.focus()
     let canvasCtx = this.canvas.getContext('2d');
     this.setState({ canvasCtx: canvasCtx})
     this.draw()
+    this.audio.play();
   }
 
   componentWillUnmount() {
-    cancelAnimationFrame(this.state.request);
+    cancelAnimationFrame(() => {this.draw()});
+    // cancelAnimationFrame(this.state.request);
   }
 
-  componentDidUpdate() {
-    this.draw()
+  onKeyDown = (e) => {
+    keysPressed[e.keyCode] = true
+    const { x, y } = this.state.position
+    const delta = 13
+    //CONTROLS
+    // let keyloop = () => {
+      if (keysPressed[37]) { this.setState({position: {x: x-delta, y: y}}) } //Left
+      if (keysPressed[39]) { this.setState({position: {x: x+delta, y: y}}) } //Right
+      if (keysPressed[38]) { this.setState({position: {x: x, y: y-delta}}) } //Up
+      if (keysPressed[40]) { this.setState({position: {x: x, y: y+delta}}) } //Down
 
+      //RightUp
+      if (keysPressed[39] && keysPressed[38]) { this.setState({position: {x: x+delta, y: y-delta}}) }
+      //LeftUp
+      if (keysPressed[37] && keysPressed[38]) { this.setState({position: {x: x-delta, y: y-delta}}) }
+      //RightDown
+      if (keysPressed[39] && keysPressed[40]) { this.setState({position: {x: x+delta, y: y+delta}}) }
+      //LeftDown
+      if (keysPressed[37] && keysPressed[40]) { this.setState({position: {x: x-delta, y: y+delta}}) }
+      //LeftRight
+      if (keysPressed[37] && keysPressed[39]) { this.setState({position: {x: x, y: y}}) }
+      //UpDown
+      if (keysPressed[38] && keysPressed[40]) { this.setState({position: {x: x, y: y}}) }
+      
+      //LeftUpRight
+      if (keysPressed[37] && keysPressed[38] && keysPressed[39]) { this.setState({position: {x: x, y: y-delta}}) }
+      //LeftDownRight
+      if (keysPressed[37] && keysPressed[40] && keysPressed[39]) { this.setState({position: {x: x, y: y+delta}}) }
+    // }
+    // setInterval( keyloop, 100 );
+    // e.preventDefault()
   }
 
-  animateEnemies() {
-    const enemy = this.state.enemy
-    let ctx = this.canvas.getContext('2d');
-    ctx.rect(circle.x, circle.y, 10, 10)
-    ctx.fillStyle = circle.fill;
-    // ctx.fill();
-    animate('y', 500, 5000);
+  onKeyUp = (e) => {
+    keysPressed[e.keyCode] = false
   }
 
   drawBall = () => {
     let ctx = this.canvas.getContext('2d');
     enemiesJSX.forEach(enemy => {
-      ctx.beginPath();
-      ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI*2);
-      ctx.fillStyle = "yellow";
-      ctx.fill();
-      ctx.closePath();
+      ctx.drawImage(enemy.image,enemy.x,enemy.y,40,40)
     })
   }
 
   draw = () => {
+    // console.log(this.props.gameOver)
     const { x, y } = this.state.position
     const enemy = this.state.enemy
-    let canvasCtx = this.canvas.getContext('2d');
-    // let drawVisual = requestAnimationFrame(this.draw);
+    if (this.canvas) {
+      let canvasCtx = this.canvas.getContext('2d');
+  
+      //redraw background
+      canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      canvasCtx.fillStyle = 'rgb(0, 0, 0)';
+      canvasCtx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+      canvasCtx.fill();
+  
+      //draw player
+      canvasCtx.drawImage(player,x,y,40,40)
+      // canvasCtx.fillStyle = 'rgb(255, 255, 255)';
+      // canvasCtx.fillRect(x, y, 20, 20);
+      // canvasCtx.fill();
+  
+      this.drawBall()
+     
+      enemiesJSX.forEach(enemy => {
+        if((  x >= enemy.x - 20 && x <= enemy.x + 20) && (y >= enemy.y - 30 && y <= enemy.y + 30)) {
+          let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
+          enemy.x = Math.floor(Math.random() * 700)
+          enemy.y = 0
+          enemy.dx += Math.floor((Math.random() * increasingSpeedMax))*negative
+          enemy.dy += Math.floor((Math.random() * increasingSpeedMax))
+          console.log('you lose!')
+          this.props.lifeCounter()
+        }
+        if(enemy.x > 700 || enemy.x < -30) {
+          let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
+          enemy.x = Math.floor(Math.random() * 700)
+          enemy.y = 0
+          enemy.dx += Math.floor((Math.random() * increasingSpeedMax))*negative
+          enemy.dy += Math.floor((Math.random() * increasingSpeedMax))
+        } else {
+          enemy.x += enemy.dx;
+        }
+        if(enemy.y > 700 || enemy.y < -20) {
+          let negative = Math.floor(Math.random()*2) == 1 ? 1 : -1
+          enemy.x = Math.floor(Math.random() * 700)
+          enemy.y = 0
+          enemy.dx += Math.floor((Math.random() * increasingSpeedMax))*negative
+          enemy.dy += Math.floor((Math.random() * increasingSpeedMax))
+        } else {
+          enemy.y += enemy.dy;
+        }
+      })
+      requestAnimationFrame(() => {this.draw()});
+    }
 
-    //redraw background
-    canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    canvasCtx.fillStyle = 'rgb(0, 0, 0)';
-    canvasCtx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    canvasCtx.fill();
-
-    //draw player
-    canvasCtx.fillStyle = 'rgb(255, 255, 255)';
-    canvasCtx.fillRect(x, y, 20, 20);
-    canvasCtx.fill();
-
-
-    this.drawBall()
-    enemiesJSX.forEach(enemy => {
-      if((  x >= enemy.x - 10 && x <= enemy.x + 10) && (y >= enemy.y - 10 && y <= enemy.y + 10)) {
-        console.log('you lose!')
-      }
-      if(enemy.x > 700 || enemy.x < 0) {
-        enemy.x = Math.floor(Math.random() * 700)
-        enemy.y = 0
-      } else {
-        
-        enemy.x += enemy.dx;
-      }
-      if(enemy.y > 700 || enemy.y < 0) {
-        enemy.x = Math.floor(Math.random() * 700)
-        enemy.y = 0
-      } else {
-        enemy.y += enemy.dy;
-      }
-    })
-
-    // canvasCtx.moveTo(enemy.x,enemy.y+7);
-    // //enemy  
-    // canvasCtx.fillStyle = 'pink';
-    // canvasCtx.arc(enemy.x,enemy.y,20,0,2*Math.PI)
-    
-    requestAnimationFrame(() => {this.draw()});
-    // window.requestAnimationFrame(this.draw)
   }
 
   render() {
+    
     return (
-      <div {...ArrowKeysReact.events} tabIndex="1">
+      <div 
+        tabIndex={-1}
+        ref={(container) => {this.container = container}} 
+        onKeyDown={this.onKeyDown} 
+        onKeyUp={this.onKeyUp}
+        style={{zIndex: 1}}
+      >
         <canvas ref={(self) => {this.canvas = self}}
           style={{backgroundColor: 'black'}}
           width={window.innerWidth}
           height={window.innerHeight}
         />
+        <audio loop ref={audio => this.audio = audio}>
+          <source src="playgame.mp3" />
+        </audio>
       </div>
     )
   }
